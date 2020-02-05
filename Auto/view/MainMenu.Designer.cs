@@ -246,6 +246,7 @@
             this.PoistaButton.TabIndex = 17;
             this.PoistaButton.Text = "Poista";
             this.PoistaButton.UseVisualStyleBackColor = true;
+            this.PoistaButton.Click += new System.EventHandler(this.PoistaButton_Click);
             // 
             // label6
             // 

@@ -19,6 +19,22 @@ namespace Autokauppa.model
         public int VaritID { get; set; }
         public int PolttoaineID { get; set; }
 
+        public static Auto Make(int iD, decimal hinta, DateTime rekisteri_paivamaara, decimal moottorin_tilavuus, int mittarilukema, int autonMerkkiID, int autonMalliID, int varitID, int polttoaineID)
+        {
+            return new Auto
+            {
+            ID = iD,
+            Hinta = hinta,
+            Rekisteri_paivamaara = rekisteri_paivamaara,
+            Moottorin_tilavuus = moottorin_tilavuus,
+            Mittarilukema = mittarilukema,
+            AutonMerkkiID = autonMerkkiID,
+            AutonMalliID = autonMalliID,
+            VaritID = varitID,
+            PolttoaineID = polttoaineID
+            };
+        }
+
         public static Auto Create(IDataRecord record)
         {
             return new Auto
@@ -35,6 +51,7 @@ namespace Autokauppa.model
             };
             
         }
+
     }
 
     public class AutoMalli

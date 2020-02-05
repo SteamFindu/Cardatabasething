@@ -12,33 +12,33 @@ namespace Autokauppa.model
     {
         string yhteysTiedot { get; set; }
 
-        SqlConnection DbYhteys{ get; set; }
+        SqlConnection DbYhteys { get; set; }
 
         SqlCommand cmd { get; set; }
-        
+
         SqlDataReader dr { get; set; }
-        
+
         public DatabaseHallinta()
         {
-           yhteysTiedot = "Integrated Security=true; server=(Local)";
+            yhteysTiedot = "Integrated Security=true; server=(Local)";
         }
 
         public bool connectDatabase()
         {
             DbYhteys = new SqlConnection(yhteysTiedot);
-            
+
             try
-            { 
+            {
                 DbYhteys.Open();
                 return true;
             }
-            catch(Exception e)
-            { 
+            catch (Exception e)
+            {
                 Console.WriteLine("Virheilmoitukset:" + e);
                 DbYhteys.Close();
                 return false;
             }
-            
+
         }
 
         public void disconnectDatabase()
@@ -50,14 +50,14 @@ namespace Autokauppa.model
         {
             bool palaute = false;
             return palaute;
-            
+
         }
         public List<string> getFromDatabase(string sql, int valueid)
         {
 
             List<string> output = new List<string>();
-            
-            
+
+
             cmd = new SqlCommand(sql, DbYhteys);
 
             dr = cmd.ExecuteReader();
@@ -111,14 +111,14 @@ namespace Autokauppa.model
         {
             return getFromDatabase("SELECT [ID] ,[Varin_nimi] FROM[Automvc].[dbo].[Varit]", 1);
         }
-            
+
         public List<string> getFuel()
         {
             return getFromDatabase("SELECT[ID],[Polttoaineen_nimi] FROM[Automvc].[dbo].[Polttoaine]", 1);
         }
         public IEnumerable<Auto> GetAutos(int MakerID, int MakeID)
         {
-            string sql = "SELECT TOP 1000 [ID],[Hinta],[Rekisteri_paivamaara],[Moottorin_tilavuus],[Mittarilukema],[AutonMerkkiID],[AutonMalliID] ,[VaritID],[PolttoaineID] FROM[Automvc].[dbo].[auto] WHERE[AutonMerkkiID] = " + MakerID + " AND [AutonMalliID] = " + MakeID;
+            string sql = "SELECT [ID],[Hinta],[Rekisteri_paivamaara],[Moottorin_tilavuus],[Mittarilukema],[AutonMerkkiID],[AutonMalliID] ,[VaritID],[PolttoaineID] FROM[Automvc].[dbo].[auto] WHERE[AutonMerkkiID] = " + MakerID + " AND [AutonMalliID] = " + MakeID;
 
             cmd = new SqlCommand(sql, DbYhteys);
 
@@ -137,11 +137,14 @@ namespace Autokauppa.model
         {
             try
             {
-                string largestid;
+                string largestid = getFromDatabase("SELECT [ID] FROM [Automvc].[dbo].[auto] WHERE id=(SELECT max(ID) FROM [Automvc].[dbo].[auto])", 0)[0];
 
+                Console.WriteLine(largestid);
 
-                string sql = ("INSERT INTO [Automvc].[dbo].[auto] VALUES (" + largestid  + " " + car.Hinta + " " + car.Rekisteri_paivamaara + " " + car.Moottorin_tilavuus + " " + car.Mittarilukema
+                string sql = ("INSERT INTO [Automvc].[dbo].[auto] VALUES (" + (largestid + 1)  + " " + car.Hinta + " " + car.Rekisteri_paivamaara + " " + car.Moottorin_tilavuus + " " + car.Mittarilukema
                              + " " + car.AutonMerkkiID + " " + car.AutonMalliID + " " + car.VaritID + " " + car.PolttoaineID + ")");
+
+                // this shit pukes out format errors, fix that.
 
                 cmd = new SqlCommand(sql, DbYhteys);
 

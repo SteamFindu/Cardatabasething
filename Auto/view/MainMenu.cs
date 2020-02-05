@@ -61,7 +61,9 @@ namespace Autokauppa.view
 
         private void TallennaButton_Click(object sender, EventArgs e)
         {
-            registerHandler.PutAuto(new model.Auto());
+            registerHandler.PutAuto(model.Auto.Make(0, Convert.ToDecimal(Hinta.Text), dateTimePicker1.Value, Convert.ToDecimal(Tilavuus.Text),
+                                    Convert.ToInt32(MittariLukema.Text), Convert.ToInt32(Merkki.SelectedValue), Convert.ToInt32(Malli.SelectedValue),
+                                    Vari.SelectedIndex, Polttoaine.SelectedIndex));
         }
 
         private void Merkki_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,5 +123,9 @@ namespace Autokauppa.view
             }
         }
 
+        private void PoistaButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
